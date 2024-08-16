@@ -28,7 +28,7 @@ const Navbar = () => {
                   JM
                 </div>
                 {menuOpen && (
-                  <div className='absolute space-y-2 border p-3 w-[8rem] top-[4.5rem] rounded'>
+                  <div className='absolute space-y-2 border p-3 w-[8rem] top-[4.5rem] rounded  bg-white'>
                     <Link
                       onClick={toggleMenu}
                       className='block'

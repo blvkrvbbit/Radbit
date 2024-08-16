@@ -1,3 +1,5 @@
+import HeroImage from '@/app/components/hero-image/hero-image.component';
+import ImageView from '@/app/components/image-view/image-view.component';
 import Image from 'next/image';
 
 const AdPage = async ({ params }: { params: { id: number } }) => {
@@ -10,60 +12,42 @@ const AdPage = async ({ params }: { params: { id: number } }) => {
     <div className='container mt-8'>
       <div className='max-w-[50rem] mx-auto'>
         <h1 className='font-bold my-4'>{ad.title}</h1>
-        <div className='flex justify-between mb-4'>
+        <div className='flex justify-between mb-4 items-center'>
           <p>{ad.user.city}</p>
-          <p>${ad.price}</p>
+          <p className='font-bold text-2xl text-green-600'>${ad.price}</p>
         </div>
       </div>
-
+      {/* Mobile View */}
       <div className='lg:hidden bg-gray-100'>
-        <Image
-          src={ad.images[0].url}
-          // width={20}
-          // height={20}
-          alt={`image of the ${ad.title}`}
-          className='mx-auto'
-          width={0}
-          height={0}
-          sizes='100vw'
-          style={{ width: 'auto', height: '20rem' }}
-        />
-        <div className='grid grid-cols-3 mt-2 gap-4'>
-          {ad.images.map((image: any, id: any) => (
-            <Image
-              src={image.url}
-              key={id}
-              alt={`image of the ${ad.title}`}
-              width={0}
-              height={0}
-              sizes='100vw'
-              style={{ width: '100%', height: '10rem' }}
-            />
-          ))}
-        </div>
+        <HeroImage images={ad.images} title={ad.title} className='w-full' />
+        <ImageView images={ad.images} />
       </div>
       <div className='hidden bg-gray-200 max-w-[50rem] pl-4 mx-auto lg:grid lg:grid-cols-4'>
-        <img
+        <HeroImage
+          images={ad.images}
+          title={ad.title}
           className='w-full h-[34rem] py-4 mx-auto col-span-3'
-          src={ad.images[1].url}
-          alt=''
         />
+
         <div className='flex flex-col gap-4 py-4 '>
-          <img
-            className='w-[10rem] h-[10rem] mx-auto col-span-3'
-            src={ad.images[0].url}
-            alt=''
-          />
-          <img
-            className='w-[10rem] h-[10rem] mx-auto col-span-3'
-            src={ad.images[1].url}
-            alt=''
-          />
-          <img
-            className='w-[10rem] h-[10rem] mx-auto col-span-3'
-            src={ad.images[2].url}
-            alt=''
-          />
+          {ad.images
+            .filter((image: any) => {
+              if (!image.hero) {
+                console.log(image);
+                return image;
+              }
+            })
+            .slice(0, 2)
+            .map((image: any, id: number) => {
+              return (
+                <img
+                  key={id}
+                  className='w-[10rem] h-[10rem] mx-auto col-span-3'
+                  src={image.url}
+                  alt=''
+                />
+              );
+            })}
         </div>
       </div>
       <div className='max-w-[50rem] mx-auto my-4 '>

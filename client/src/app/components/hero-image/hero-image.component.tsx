@@ -10,9 +10,10 @@ type Props = {
     hero: boolean;
   }[];
   title: string;
+  className?: string;
 };
 
-const HeroImage = ({ images, title }: Props) => {
+const HeroImage = ({ images, title, className }: Props) => {
   const [heroImage, setHeroImage] = useState<any>(null);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const HeroImage = ({ images, title }: Props) => {
         src={heroImage.url}
         width={20}
         height={20}
-        className='h-[8rem] w-40'
+        className={className ? className : 'h-[8rem] w-40'}
         alt={title}
         unoptimized
       />
@@ -43,7 +44,7 @@ const HeroImage = ({ images, title }: Props) => {
         src={images[0].url}
         width={20}
         height={20}
-        className='h-[8rem] w-40'
+        className={className ? className : 'h-[8rem] w-40'}
         alt={'Swap me out'}
         unoptimized
       />
