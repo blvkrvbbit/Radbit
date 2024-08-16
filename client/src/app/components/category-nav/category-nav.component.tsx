@@ -11,6 +11,7 @@ const CategoryNav = async () => {
     <div>
       <h1 className='text-3xl mb-4'>Free Classified Ads</h1>
       <div className='flex gap-4 mb-12 flex-wrap'>
+        <Link href={`/`}>Latest Listings</Link>
         {categories &&
           categories.map((category: any, id: any) => {
             return (

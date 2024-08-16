@@ -13,8 +13,8 @@ const formatCategoryUrl = (category: string) => {
 };
 
 export const formatCategory = (category: string) => {
-  const formattedCategory = '';
   let categoryArr = [];
+  console.log(category, 'formatter');
   if (category.includes('-') && category.toLowerCase() !== 'real-estate') {
     categoryArr = category.split('-');
 
@@ -34,7 +34,9 @@ export const formatCategory = (category: string) => {
       })
       .join(' ');
   }
-  return category;
+  return (
+    category.slice(0, 1).toUpperCase() + category.slice(1, category.length)
+  );
 };
 
 export default formatCategoryUrl;

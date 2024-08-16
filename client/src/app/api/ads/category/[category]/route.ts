@@ -6,31 +6,43 @@ export async function GET(
   req: Request,
   { params }: { params: { category: string } }
 ) {
-  const categories = await db.category.findMany({
-    where: {
-      name: formatCategory(params.category),
-    },
-    include: {
-      ads: {
-        select: {
-          id: true,
-          title: true,
-          price: true,
-          description: true,
-          createdDate: true,
-          user: {
-            select: {
-              name: true,
-              country: true,
-              provinceState: true,
-              city: true,
+  console.log(formatCategory(params.category), 'format');
+  try {
+    const categories = await db.category.findMany({
+      where: {
+        name: formatCategory(params.category),
+      },
+      include: {
+        ads: {
+          select: {
+            id: true,
+            title: true,
+            price: true,
+            description: true,
+            createdDate: true,
+            user: {
+              select: {
+                name: true,
+                country: true,
+                provinceState: true,
+                city: true,
+              },
             },
+            images: true,
           },
-          images: true,
         },
       },
-    },
-  });
+    });
 
-  return NextResponse.json(categories[0]);
+    return NextResponse.json(categories[0]);
+  } catch (err: any) {
+    console.log(err);
+    console.log('params', params.category);
+    return NextResponse.json(
+      { error: err.message },
+      {
+        status: 500,
+      }
+    );
+  }
 }

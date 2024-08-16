@@ -27,7 +27,7 @@ const HomePage = async () => {
                 return (
                   <Link
                     href={`/ads/${ad.id}`}
-                    className='col-span-4 border p-4 flex gap-4'
+                    className='col-span-12 lg:col-span-4 border p-4 flex gap-4'
                     key={key}
                   >
                     <HeroImage images={ad.images} title={ad.title} />
