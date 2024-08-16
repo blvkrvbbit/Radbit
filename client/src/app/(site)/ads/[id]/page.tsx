@@ -15,12 +15,7 @@ const AdPage = async ({ params }: { params: { id: number } }) => {
           <p>${ad.price}</p>
         </div>
       </div>
-      {/* 
-      
-        TODO: 
-        Create ability to have a hero image
-        check image length to determine if portrait or if landscape
-      */}
+
       <div className='lg:hidden bg-gray-100'>
         <Image
           src={ad.images[0].url}
@@ -34,7 +29,7 @@ const AdPage = async ({ params }: { params: { id: number } }) => {
           style={{ width: 'auto', height: '20rem' }}
         />
         <div className='grid grid-cols-3 mt-2 gap-4'>
-          {ad.images.map((image, id) => (
+          {ad.images.map((image: any, id: any) => (
             <Image
               src={image.url}
               key={id}

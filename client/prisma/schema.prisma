@@ -25,14 +25,15 @@ model User {
 }
 
 model Ad {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   title       String
   price       Int
   description String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   images      Image[]
-  createdDate DateTime @default(now())
+  createdDate DateTime   @default(now())
+  categories  Category[]
 }
 
 model Image {
@@ -42,3 +43,13 @@ model Image {
   adId Int
   hero Boolean?
 }
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  ads  Ad[]
+}
+
+// model SubCategory {
+
+// }

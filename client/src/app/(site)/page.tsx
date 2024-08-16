@@ -2,27 +2,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeroImage from '../components/hero-image/hero-image.component';
 
-type Ad = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  userId: number;
-  createdDate: string;
-  images: {
-    id: number;
-    url: string;
-    adId: number;
-    hero: boolean;
-  }[];
-  user: {
-    name: string;
-    email: string;
-    country: string;
-    provinceState: string;
-    city: string;
-  };
-};
+import formatCategoryUrl from '../utils/format-categories';
+import CategoryNav from '../components/category-nav/category-nav.component';
+import Ad from '../types/ad.type';
+
+// TODO: fix Redirect to ads page
 
 const HomePage = async () => {
   const response = await fetch(`${process.env.NEXT_URL}/api/ads`, {
@@ -33,9 +17,11 @@ const HomePage = async () => {
   return (
     <main>
       <div className='container mt-8'>
+        <CategoryNav />
         <div className='latest'>
           <h1 className='mb-4 text-3xl'>Latest Listings</h1>
-          <div className='grid grid-cols-12'>
+
+          <div className='grid grid-cols-12 gap-4'>
             {ads &&
               ads.map((ad: Ad, key: number) => {
                 return (
