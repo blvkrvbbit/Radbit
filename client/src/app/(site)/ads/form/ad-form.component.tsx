@@ -1,5 +1,5 @@
 'use client';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import adFormSchema from './ad-form.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -9,11 +9,16 @@ import PreviewImage from './preview-image/preview-image.component';
 import { Icon } from '@iconify/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Tiptap from '@/app/components/tiptap/tiptap';
 type Props = {
   editing?: boolean;
+  categories: {
+    id: number;
+    name: string;
+  }[];
 };
 
-const AdForm = ({ editing }: Props) => {
+const AdForm = ({ editing, categories }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const {
@@ -21,6 +26,7 @@ const AdForm = ({ editing }: Props) => {
     handleSubmit,
     watch,
     getValues,
+    control,
     formState: { errors },
   } = useForm<z.infer<typeof adFormSchema>>({
     resolver: zodResolver(adFormSchema),
@@ -37,6 +43,7 @@ const AdForm = ({ editing }: Props) => {
       title: values.title,
       price: values.price,
       description: values.description,
+      category: values.category,
       images: [],
     };
 
@@ -102,6 +109,18 @@ const AdForm = ({ editing }: Props) => {
         {!editing ? 'Create Ad' : 'Edit Ad'}
       </h1>
       <div>
+        <select className='border w-full p-2' {...register('category')}>
+          <option value=''>Select Category</option>
+          {categories.map((c) => {
+            return (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div>
         <input
           placeholder='Enter a title'
           className='border w-full p-2'
@@ -119,12 +138,14 @@ const AdForm = ({ editing }: Props) => {
         />
       </div>
       <div>
-        {/* TODO: Swap with tiptap */}
-        <textarea
-          defaultValue={'Enter a description'}
-          className='border w-full p-2'
-          {...register('description')}
-        ></textarea>
+        <Controller
+          render={({ field }) => (
+            <Tiptap description={field.value} onChange={field.onChange} />
+          )}
+          control={control}
+          name='description'
+          defaultValue=''
+        />
       </div>
       <div className='grid grid-cols-3 gap-4'>
         {previewImageUrls.map((image: string, id: number) => {

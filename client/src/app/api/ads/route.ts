@@ -33,7 +33,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-  const { title, price, description, images } = await req.json();
+  const { title, price, description, images, category } = await req.json();
+  console.log(category);
   try {
     const ad = await db.ad.create({
       data: {
@@ -41,6 +42,11 @@ export async function POST(req: Request) {
         price,
         description,
         userId: Number(session!.user.id),
+        categories: {
+          connect: {
+            id: Number(category),
+          },
+        },
       },
     });
 
