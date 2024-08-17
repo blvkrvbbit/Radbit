@@ -1,6 +1,7 @@
 import HeroImage from '@/app/components/hero-image/hero-image.component';
 import ImageView from '@/app/components/image-view/image-view.component';
 import Image from 'next/image';
+import RenderHTML from '@/app/components/render-html/render-html';
 
 const AdPage = async ({ params }: { params: { id: number } }) => {
   const response = await fetch(`${process.env.NEXT_URL}/api/ads/${params.id}`, {
@@ -52,7 +53,7 @@ const AdPage = async ({ params }: { params: { id: number } }) => {
       </div>
       <div className='max-w-[50rem] mx-auto my-4 '>
         <h2 className='font-bold text-lg mb-2'>Description</h2>
-        <p>{ad.description}</p>
+        <RenderHTML content={ad.description} />
       </div>
     </div>
   );

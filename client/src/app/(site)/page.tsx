@@ -5,7 +5,7 @@ import HeroImage from '../components/hero-image/hero-image.component';
 import formatCategoryUrl from '../utils/format-categories';
 import CategoryNav from '../components/category-nav/category-nav.component';
 import Ad from '../types/ad.type';
-
+import RenderHTML from '../components/render-html/render-html';
 // TODO: fix Redirect to ads page
 
 const HomePage = async () => {
@@ -38,7 +38,7 @@ const HomePage = async () => {
                           ${ad.price}
                         </div>
                       </div>
-                      <p className='mt-4'>{ad.description.slice(0, 40)}...</p>
+                      <RenderHTML className='mt-4' content={ad.description} />
                     </div>
                   </Link>
                 );
