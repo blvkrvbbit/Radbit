@@ -6,7 +6,6 @@ export async function GET(
   req: Request,
   { params }: { params: { category: string } }
 ) {
-  console.log(formatCategory(params.category), 'format');
   try {
     const categories = await db.category.findMany({
       where: {
@@ -36,8 +35,6 @@ export async function GET(
 
     return NextResponse.json(categories[0]);
   } catch (err: any) {
-    console.log(err);
-    console.log('params', params.category);
     return NextResponse.json(
       { error: err.message },
       {

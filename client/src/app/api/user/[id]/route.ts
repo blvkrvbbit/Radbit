@@ -57,6 +57,6 @@ export async function PUT(
     },
     data: dataToUpdate,
   });
-  console.log(updatedUser);
+
   return NextResponse.json({ message: 'Hit' });
 }

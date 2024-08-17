@@ -60,7 +60,6 @@ const AdForm = ({ editing, categories }: Props) => {
       uploadedImageData = await uploadResponse.json();
       if (heroIndex) {
         uploadedImageData[heroIndex].hero = true;
-        console.log(uploadedImageData);
       }
       submitValues = {
         ...submitValues,
@@ -78,14 +77,12 @@ const AdForm = ({ editing, categories }: Props) => {
       router.refresh();
     }
     const data = await response.json();
-    console.log(data);
   };
 
   const handleHeroSelect = (e: any) => {
     setHeroIndex(e.target.id);
   };
   useEffect(() => {
-    console.log('Images:', images);
     let imageUrlsToSet = [];
     if (images) {
       for (let i = 0; i < images.length; i++) {
@@ -94,10 +91,6 @@ const AdForm = ({ editing, categories }: Props) => {
     }
     setPreviewImageUrls(imageUrlsToSet);
   }, [images]);
-
-  // useEffect(() => {
-  //   console.log(previewImageUrls);
-  // }, [previewImageUrls]);
 
   return (
     <form

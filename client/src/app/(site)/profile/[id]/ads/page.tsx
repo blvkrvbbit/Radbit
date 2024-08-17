@@ -1,15 +1,23 @@
 import Protected from '@/app/components/protected/protected.component';
-import { getServerSession } from 'next-auth';
-import Link from 'next/link';
-import { authOptions } from '../../../../../../lib/auth-options';
 import ProfileLayout from '../profile-layout/profile-layout.component';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../../../../lib/auth-options';
+import CardList, {
+  CustomCardList,
+} from '@/app/components/card-list/card-list.component';
+import FilterAds from './filter-ads/filter-ads.component';
 
 const MyAdsPage = async () => {
   const session = await getServerSession(authOptions);
+  const response = await fetch(
+    `${process.env.NEXT_URL}/api/ads/user/${session?.user.id}`
+  );
+  const ads = await response.json();
+
   return (
     <Protected>
       <ProfileLayout>
-        <h1 className='text-2xl'>My Ads</h1>
+        <FilterAds ads={ads} />
       </ProfileLayout>
     </Protected>
   );

@@ -14,7 +14,7 @@ const formatCategoryUrl = (category: string) => {
 
 export const formatCategory = (category: string) => {
   let categoryArr = [];
-  console.log(category, 'formatter');
+
   if (category.includes('-') && category.toLowerCase() !== 'real-estate') {
     categoryArr = category.split('-');
 

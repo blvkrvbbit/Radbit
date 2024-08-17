@@ -30,7 +30,7 @@ const LoginForm = () => {
       password: values.password,
       redirect: false,
     });
-    console.log(response);
+
     if (!response?.error) {
       // Figure out a way to properly handle route changing
       router.refresh();

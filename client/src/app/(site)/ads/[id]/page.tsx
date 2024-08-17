@@ -34,7 +34,6 @@ const AdPage = async ({ params }: { params: { id: number } }) => {
           {ad.images
             .filter((image: any) => {
               if (!image.hero) {
-                console.log(image);
                 return image;
               }
             })

@@ -28,7 +28,7 @@ const RegisterForm = () => {
       }),
     });
     if (response.status === 200) {
-      console.log('redirect to profile');
+      // TODO: Redirect to profile after successful register
     } else {
       // Handle Server Error on client to display to user.
     }

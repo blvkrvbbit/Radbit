@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   const formData = await req.formData();
   try {
     const files = formData.getAll('files');
-    console.log(files);
+
     let uploadedDataArr = [];
     let uploadedData = null;
     for (let i = 0; i < files.length; i++) {

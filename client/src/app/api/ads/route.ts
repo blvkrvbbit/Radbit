@@ -34,7 +34,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   const { title, price, description, images, category } = await req.json();
-  console.log(category);
+
   try {
     const ad = await db.ad.create({
       data: {
@@ -68,7 +68,6 @@ export async function POST(req: Request) {
       }
     );
   } catch (err: any) {
-    console.log(err);
     return NextResponse.json(
       { error: err.message },
       {
@@ -76,5 +75,4 @@ export async function POST(req: Request) {
       }
     );
   }
-  return NextResponse.json({ message: 'HIT' });
 }
