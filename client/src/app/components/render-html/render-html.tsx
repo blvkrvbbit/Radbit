@@ -8,7 +8,7 @@ type Props = {
 };
 
 const createMarkup = (content: string) => {
-  return { __html: DOMPurify.sanitize(content.slice(0, 40)) };
+  return { __html: DOMPurify.sanitize(content) };
 };
 
 const RenderHTML = ({ content, className }: Props) => (

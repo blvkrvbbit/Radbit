@@ -1,11 +1,6 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import HeroImage from '../components/hero-image/hero-image.component';
-
-import formatCategoryUrl from '../utils/format-categories';
 import CategoryNav from '../components/category-nav/category-nav.component';
-import Ad from '../types/ad.type';
-import RenderHTML from '../components/render-html/render-html';
+
+import CardList from '../components/card-list/card-list.component';
 // TODO: fix Redirect to ads page
 
 const HomePage = async () => {
@@ -20,30 +15,7 @@ const HomePage = async () => {
         <CategoryNav />
         <div className='latest'>
           <h1 className='mb-4 text-3xl'>Latest Listings</h1>
-
-          <div className='grid grid-cols-12 gap-4'>
-            {ads &&
-              ads.map((ad: Ad, key: number) => {
-                return (
-                  <Link
-                    href={`/ads/${ad.id}`}
-                    className='col-span-12 lg:col-span-4 border p-4 flex gap-4'
-                    key={key}
-                  >
-                    <HeroImage images={ad.images} title={ad.title} />
-                    <div>
-                      <div className='flex justify-between w-full items-center'>
-                        <h3>{ad.title.slice(0, 20)}...</h3>
-                        <div className='text-green-600 font-bold text-lg'>
-                          ${ad.price}
-                        </div>
-                      </div>
-                      <RenderHTML className='mt-4' content={ad.description} />
-                    </div>
-                  </Link>
-                );
-              })}
-          </div>
+          <CardList ads={ads.slice(0, 6)} />
         </div>
       </div>
     </main>

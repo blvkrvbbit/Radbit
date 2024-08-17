@@ -11,7 +11,12 @@ const CategoryNav = async () => {
     <div>
       <h1 className='text-3xl mb-4'>Free Classified Ads</h1>
       <div className='flex gap-4 mb-12 flex-wrap'>
-        <Link href={`/`}>Latest Listings</Link>
+        <Link
+          className='hover:bg-gray-400/20 px-3 py-1 rounded-full'
+          href={`/`}
+        >
+          Latest Listings
+        </Link>
         {categories &&
           categories.map((category: any, id: any) => {
             return (
@@ -19,6 +24,7 @@ const CategoryNav = async () => {
                 href={`/ads/category/${formatCategoryUrl(
                   category.name
                 ).toLowerCase()}`}
+                className='hover:bg-gray-400/20 px-3 py-1 rounded-full'
                 key={id}
               >
                 {category.name}

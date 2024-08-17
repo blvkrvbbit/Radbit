@@ -33,13 +33,13 @@ const config: Config = {
             maxWidth: '640px',
           },
           '@screen md': {
-            maxWidth: '768px',
+            maxWidth: 'calc(100% - 64px)',
           },
           '@screen lg': {
-            maxWidth: '1280px',
+            maxWidth: 'calc(100% - 96px)',
           },
           '@screen xl': {
-            maxWidth: '1400px',
+            maxWidth: 'calc(1500px - 128px)',
           },
         },
       });
