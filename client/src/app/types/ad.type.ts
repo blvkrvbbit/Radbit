@@ -17,6 +17,7 @@ type Ad = {
     country: string;
     provinceState: string;
     city: string;
+    Ad: any;
   };
 };
 

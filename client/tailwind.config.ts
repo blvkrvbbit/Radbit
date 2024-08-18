@@ -39,7 +39,7 @@ const config: Config = {
             maxWidth: 'calc(100% - 96px)',
           },
           '@screen xl': {
-            maxWidth: 'calc(1500px - 128px)',
+            maxWidth: 'calc(1360px - 128px)',
           },
         },
       });

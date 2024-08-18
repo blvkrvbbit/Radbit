@@ -19,6 +19,7 @@ export async function GET(
             country: true,
             provinceState: true,
             city: true,
+            Ad: true,
           },
         },
       },

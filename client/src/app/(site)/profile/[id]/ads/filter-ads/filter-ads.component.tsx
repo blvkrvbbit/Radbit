@@ -9,6 +9,10 @@ type Props = {
   ads: Ad[];
 };
 
+/**
+ * TODO: Create a reusable pagination for places without much data incoming
+ * FIXME: Fix the type error, and replace any with correct typing.
+ */
 const FilterAds = ({ ads }: Props) => {
   const [filteredAds, setFilteredAds] = useState(ads);
   const [pages, setPages] = useState<Ad[]>([]);

@@ -20,6 +20,7 @@ const CardList = ({ ads }: Props) => {
 type CustomProps = {
   ads: any;
 };
+
 // TODO: Come up with a better card name
 export const CustomCardList = ({ ads }: CustomProps) => {
   return (
