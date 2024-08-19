@@ -28,27 +28,9 @@ const HeroImage = ({ images, title, className }: Props) => {
 
   // If hero image select it else return a default of first index.
   if (heroImage) {
-    return (
-      <Image
-        src={heroImage.url}
-        width={20}
-        height={20}
-        className={className ? className : 'h-[8rem] w-40'}
-        alt={title}
-        unoptimized
-      />
-    );
+    return <Image src={heroImage.url} layout='fill' alt={title} />;
   } else {
-    return (
-      <Image
-        src={images[0].url}
-        width={20}
-        height={20}
-        className={className ? className : 'h-[8rem] w-40'}
-        alt={'Swap me out'}
-        unoptimized
-      />
-    );
+    return <Image src={images[0].url} layout='fill' alt={title} />;
   }
 };
 

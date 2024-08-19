@@ -24,7 +24,7 @@ type CustomProps = {
 // TODO: Come up with a better card name
 export const CustomCardList = ({ ads }: CustomProps) => {
   return (
-    <div className='grid grid-cols-12 gap-4'>
+    <div className='relative grid grid-cols-12 gap-4'>
       {ads &&
         ads.map((ad: Ad) => {
           return <CustomCard key={ad.id} ad={ad} />;

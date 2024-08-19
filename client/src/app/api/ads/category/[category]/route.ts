@@ -30,6 +30,7 @@ export async function GET(
             images: true,
           },
         },
+        subCategories: true,
       },
     });
 

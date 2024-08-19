@@ -25,15 +25,31 @@ model User {
 }
 
 model Ad {
-  id          Int        @id @default(autoincrement())
-  title       String
-  price       Int
-  description String
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-  images      Image[]
-  createdDate DateTime   @default(now())
-  categories  Category[]
+  id           Int         @id @default(autoincrement())
+  title        String
+  price        Int
+  description  String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  images       Image[]
+  createdDate  DateTime    @default(now())
+  categories   Category[]
+  realEstate   RealEstate? @relation(fields: [realEstateId], references: [id], onDelete: Cascade)
+  realEstateId Int?
+}
+
+model RealEstate {
+  id            Int      @id @default(autoincrement())
+  adId          Int
+  buildingType  String
+  bedrooms      Int
+  bathrooms     Int
+  size          Float
+  powerIncluded Boolean?
+  hydroIncluded Boolean?
+  heatIncluded  Boolean?
+  wifiIncluded  Boolean?
+  Ad            Ad[]
 }
 
 model Image {
@@ -45,11 +61,14 @@ model Image {
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
-  ads  Ad[]
+  id            Int           @id @default(autoincrement())
+  name          String
+  ads           Ad[]
+  subCategories SubCategory[]
 }
 
-// model SubCategory {
-
-// }
+model SubCategory {
+  id         Int        @id @default(autoincrement())
+  name       String
+  categories Category[]
+}

@@ -17,13 +17,15 @@ const CategoryPage = async ({ params }: { params: { category: string } }) => {
   const categories = await categoryResponse.json();
 
   return (
-    <div className='container mt-8'>
+    <main>
       <CategoryNav />
-      <div>
-        <h1 className='mb-4 text-3xl'>{formatCategory(params.category)}</h1>
-        <CardList ads={categories.ads} />
+      <div className='container mt-8'>
+        <div>
+          <h1 className='mb-4 text-3xl'>{formatCategory(params.category)}</h1>
+          <CardList ads={categories.ads} />
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 

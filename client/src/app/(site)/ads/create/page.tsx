@@ -7,7 +7,7 @@ const CreateAdPage = async () => {
     cache: 'no-store',
   });
   const categories = await response.json();
-  console.log(categories);
+
   return (
     <Protected>
       <div className='container'>

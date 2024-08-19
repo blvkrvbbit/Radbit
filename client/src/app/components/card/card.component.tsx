@@ -13,7 +13,9 @@ const Card = ({ ad }: Props) => {
       href={`/ads/${ad.id}`}
       className='border p-4 flex gap-4 col-span-12 md:col-span-6  xl:col-span-4'
     >
-      <HeroImage images={ad.images} title={ad.title} />
+      <div className='relative w-[8rem] h-[6rem]'>
+        <HeroImage images={ad.images} title={ad.title} />
+      </div>
       <div className='w-full'>
         <div className='flex flex-wrap justify-between items-center'>
           <h3>{ad.title.slice(0, 20)}...</h3>
@@ -39,7 +41,9 @@ export const CustomCard = ({ ad }: Props) => {
       href={`/ads/${ad.id}`}
       className='border p-4 flex gap-4 col-span-12 md:col-span-6'
     >
-      <HeroImage images={ad.images} title={ad.title} />
+      <div className='relative w-[8rem] h-[6rem]'>
+        <HeroImage images={ad.images} title={ad.title} />
+      </div>
       <div className='w-full'>
         <div className='flex justify-between items-center'>
           <h3>{ad.title.slice(0, 20)}...</h3>

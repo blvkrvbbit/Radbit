@@ -1,6 +1,5 @@
 'use client';
-
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 import { useEffect, useState } from 'react';
 
 type Props = {

@@ -8,6 +8,7 @@ const adFormSchema = z.object({
   description: z.string().min(1, { message: 'Description is required' }),
   image: z.any(),
   category: z.string().min(1, { message: 'Category is required' }),
+  // subCategory: z.string(),
   // images: z.array(z.instanceof(File)),
 });
 
