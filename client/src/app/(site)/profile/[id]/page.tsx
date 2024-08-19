@@ -10,6 +10,14 @@ const ProfilePage = async () => {
     <Protected>
       <ProfileLayout>
         <h1 className='text-2xl'>Welcome, {session?.user.name}</h1>
+        <div className='shadow-lg border flex w-1/3 mt-4 space-x-2'>
+          <div className='p-3 inline-block'>
+            <div>Messages: 0</div>
+          </div>
+          <div className='p-3 inline-block'>
+            <div>Posted Ads: 0</div>
+          </div>
+        </div>
       </ProfileLayout>
     </Protected>
   );
