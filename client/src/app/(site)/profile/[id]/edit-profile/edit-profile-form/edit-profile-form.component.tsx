@@ -43,7 +43,7 @@ const EditProfileForm = ({ user }: Props) => {
   };
   return (
     <form
-      className=' flex flex-col gap-4 mt-4'
+      className='flex flex-col gap-4 mt-4'
       action=''
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -76,7 +76,7 @@ const EditProfileForm = ({ user }: Props) => {
       </div>
       <div>
         <select className='border w-full p-2' {...register('country')}>
-          <option value=''></option>
+          <option value=''>Select Country</option>
 
           <option value='Canada'>Canada</option>
           <option value='US'>US</option>
@@ -87,7 +87,7 @@ const EditProfileForm = ({ user }: Props) => {
       {/* TODO depending on country selected display prov or state */}
       <div>
         <select className='border w-full p-2' {...register('provinceState')}>
-          <option value=''></option>
+          <option value=''>Select Province or State</option>
           {selectedCountry === 'Canada' &&
             Object.entries(provinces).map(([key, value], i) => {
               return (
@@ -121,7 +121,9 @@ const EditProfileForm = ({ user }: Props) => {
         />
         {errors.city?.message ? <p>{errors.city?.message}</p> : null}
       </div>
-      <button className='bg-[#222222] text-white py-4'>Edit Profile</button>
+      <button className='border border-primary text-primary rounded-full py-4'>
+        Edit Profile
+      </button>
     </form>
   );
 };

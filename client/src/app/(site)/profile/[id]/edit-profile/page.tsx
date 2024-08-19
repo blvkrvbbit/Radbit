@@ -15,8 +15,10 @@ const EditProfilePage = async () => {
   return (
     <Protected>
       <ProfileLayout>
-        <h1 className='text-2xl'>Edit Profile</h1>
-        <EditProfileForm user={data} />
+        <div className='max-w-[500px] mx-auto'>
+          <h1 className='text-2xl'>Edit Profile</h1>
+          <EditProfileForm user={data} />
+        </div>
       </ProfileLayout>
     </Protected>
   );
