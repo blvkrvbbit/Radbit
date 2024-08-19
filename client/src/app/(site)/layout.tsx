@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import '../globals.css';
 import Navbar from '../components/navbar/navbar.component';
 import SessionWrapper from '../components/session-wrapper/session-wrapper.component';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,10 +19,37 @@ export default function RootLayout({
 }>) {
   return (
     <SessionWrapper>
-      <html lang='en'>
-        <body className={inter.className}>
-          <Navbar />
-          {children}
+      <html className='h-full' lang='en'>
+        <body className={`h-full ${inter.className}`}>
+          <div className='flex flex-col h-full'>
+            <Navbar />
+            {children}
+            <footer className='mt-auto py-4 bg-gray-200/50 text-black'>
+              <div className='container'>
+                <div className='mb-4'>
+                  <div className='inline-block pb-2 font-bold'>Categories</div>
+                  <div className='flex space-x-4 md:space-x-8'>
+                    <div className='flex flex-col mt-4 space-y-2'>
+                      <Link href='/'>Latest Listings</Link>
+                      <Link href='/buy-sell'>Buy & Sell</Link>
+                      <Link href='/cars-vehicles'>Cars & Vehicles</Link>
+                      <Link href='/real-estate'>Real Estate</Link>
+                    </div>
+                    <div className='flex flex-col mt-4 space-y-2'>
+                      <Link href='/jobs'>Jobs</Link>
+                      <Link href='/services'>Servies</Link>
+                      <Link href='/pets'>Pets</Link>
+                      <Link href='/community'>Community</Link>
+                    </div>
+                    <div className='flex flex-col mt-4 space-y-2'>
+                      <Link href='/vacation-rentals'>Vacation Rentals</Link>
+                    </div>
+                  </div>
+                </div>
+                <small className='text-white'>&copy; Radbit 2024</small>
+              </div>
+            </footer>
+          </div>
         </body>
       </html>
     </SessionWrapper>

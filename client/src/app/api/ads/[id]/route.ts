@@ -2,6 +2,7 @@ import db from '@/app/db/db';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../../../lib/auth-options';
+import { deleteImageFromUrl } from '@/app/utils/cloudinary.utils';
 
 export async function GET(
   req: Request,
@@ -48,9 +49,19 @@ export async function DELETE(
       where: {
         id: Number(params.id),
       },
+      include: {
+        images: true,
+      },
     });
+
     console.log(ad?.userId, session?.user.id);
     if (ad?.userId === Number(session?.user.id)) {
+      if (ad.images.length > 0) {
+        for (let image of ad.images) {
+          deleteImageFromUrl(image.url);
+        }
+      }
+
       const deleted = await db.ad.delete({
         where: {
           id: Number(params.id),

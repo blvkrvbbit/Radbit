@@ -14,7 +14,7 @@ const Card = ({ ad }: Props) => {
   return (
     <Link
       href={`/ads/${ad.id}`}
-      className='border p-4 flex gap-4 col-span-12 md:col-span-6  xl:col-span-4'
+      className='shadow-lg border p-4 flex gap-4 col-span-12 md:col-span-6  xl:col-span-4'
     >
       <div className='relative w-[8rem] h-[6rem]'>
         {ad.images.length > 0 && (
@@ -31,7 +31,7 @@ const Card = ({ ad }: Props) => {
           content={ad.description.slice(0, 40) + '...'}
         />
         <RenderHTML
-          className='mt-4 lg:'
+          className='mt-4 hidden lg:block'
           content={ad.description.slice(0, 60) + '...'}
         />
       </div>
@@ -60,7 +60,7 @@ export const UserAdsCard = ({ ad }: UserAdCardProps) => {
   return (
     <Link
       href={`/ads/${ad.id}`}
-      className='border p-4 flex gap-4 col-span-12 md:col-span-6 relative'
+      className='shadow-lg border p-4 flex gap-4 col-span-12 md:col-span-6 relative'
     >
       <button
         className='absolute right-3 bottom-4 z-10'

@@ -15,7 +15,10 @@ const HomePage = async () => {
       <div className='container mt-8'>
         {/* TODO: Create pagination that utilizes prisma */}
         <div className='latest pb-4'>
-          <h1 className='mb-4 text-3xl'>Latest Listings</h1>
+          <h1 className='mb-4 text-xl border-b border-primary pb-2 inline-block'>
+            Latest Listings
+          </h1>
+
           <CardList ads={ads.slice(0, 6)} />
         </div>
       </div>

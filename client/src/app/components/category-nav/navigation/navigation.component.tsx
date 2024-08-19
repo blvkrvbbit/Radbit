@@ -14,7 +14,7 @@ type Props = {
 const Navigation = ({ categories }: Props) => {
   const pathname = usePathname();
   return (
-    <div className='flex gap-4 mb-12 flex-wrap'>
+    <div className='flex gap-4 flex-wrap'>
       <Link className='hover:bg-gray-400/20 px-3 py-1 rounded-full' href={`/`}>
         Latest Listings
       </Link>

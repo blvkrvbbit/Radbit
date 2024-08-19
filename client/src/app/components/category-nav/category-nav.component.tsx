@@ -13,7 +13,7 @@ const CategoryNav = async () => {
         <h1 className='mb-4 font-bold tracking-wide text-4xl'>
           Free Classified Ads
         </h1>
-        <div className='flex gap-4 mb-12 flex-wrap'>
+        <div className='flex gap-4  flex-wrap'>
           <Navigation categories={categories} />
         </div>
       </div>
