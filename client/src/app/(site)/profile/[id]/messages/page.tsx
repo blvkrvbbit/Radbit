@@ -8,7 +8,7 @@ const MessagePage = async () => {
   return (
     <Protected>
       <ProfileLayout>
-        <h1 className='text-2xl'>Messages</h1>
+        <h1 className='text-2xl font-bold'>Messages</h1>
       </ProfileLayout>
     </Protected>
   );

@@ -15,6 +15,7 @@ export async function GET(
       },
       include: {
         images: true,
+        categories: true,
         user: {
           select: {
             name: true,
@@ -32,6 +33,65 @@ export async function GET(
   } catch (err: any) {
     return NextResponse.json(
       { error: err.message },
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+export async function PUT(req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { title, price, description, images, category } = await req.json();
+
+  const session = await getServerSession(authOptions);
+  const ad = await db.ad.findUnique({
+    where: {
+      id: Number(params.id)
+    }
+  });
+  console.log(ad?.userId, session?.user.id);
+  try {
+    const ad = await db.ad.findUnique({
+      where: {
+        id: Number(params.id)
+      }
+    });
+
+    if (ad?.userId == session?.user.id) {
+      const updatedAd = await db.ad.update({
+        where: {
+          id: Number(params.id)
+        },
+        data: {
+          title,
+          price,
+          description,
+        }
+      });
+      return NextResponse.json(
+        {
+          message: 'Successfully updated ad',
+        },
+        {
+          status: 200,
+        }
+      );
+    }
+    return NextResponse.json(
+      {
+        message: 'Unauthorized',
+      },
+      {
+        status: 401,
+      }
+    );
+  } catch (err: any) {
+    return NextResponse.json(
+      {
+        message: err.message,
+      },
       {
         status: 500,
       }

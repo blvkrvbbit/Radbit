@@ -5,6 +5,7 @@ type Ad = {
   description: string;
   userId: number;
   createdDate: string;
+  categories: any;
   images: {
     id: number;
     url: string;

@@ -21,7 +21,7 @@ const CategoryPage = async ({ params }: { params: { category: string } }) => {
       <CategoryNav />
       <div className='container mt-8'>
         <div>
-          <h1 className='mb-4 text-3xl'>{formatCategory(params.category)}</h1>
+          <h1 className='mb-4 text-xl border-b border-primary pb-2 inline-block'>{formatCategory(params.category)}</h1>
           <CardList ads={categories.ads} />
         </div>
       </div>

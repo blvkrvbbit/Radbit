@@ -13,7 +13,7 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
   return (
     <>
-      <header className='h-16 border-b flex items-center relative py-4'>
+      <header className='h-16 border-b shadow-sm flex items-center relative py-4'>
         <div className='container flex items-center justify-between'>
           <Link href='/' className='brand text-2xl'>
             R<span className='font-bold text-primary'>ad</span>bit

@@ -11,8 +11,11 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Tiptap from '@/app/components/tiptap/tiptap';
 import { twMerge } from 'tailwind-merge';
+import Ad from '@/app/types/ad.type';
+
 type Props = {
   editing?: boolean;
+  ad?: Ad,
   categories: {
     id: number;
     name: string;
@@ -23,46 +26,48 @@ type Props = {
   }[];
 };
 
-const AdForm = ({ editing, categories }: Props) => {
+// TODO: Push in default data if editing.
+const AdForm = ({ editing, ad, categories }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [subCategories, setSubCategories] = useState<any>(null);
+  const defaultValues = ad ? {
+    title: ad.title,
+    category: ad.categories,
+    price: ad.price,
+    description: ad.description,
+    images: ad.images
+  } : {
+    title: '',
+    category: '',
+    price: null,
+    subCategory: '',
+    description: '',
+    images: []
+  };
   const {
     register,
     handleSubmit,
     watch,
-    getValues,
     control,
     formState: { errors },
   } = useForm<z.infer<typeof adFormSchema>>({
     resolver: zodResolver(adFormSchema),
     defaultValues: {
+      title: ad && ad.title ? ad.title : '',
+      category: ad && ad.categories[0] ? String(ad.categories[0].id) : '',
+      price: ad && ad.price ? ad.price : 0,
       subCategory: '',
+      description: ad && ad.description ? ad.description : '',
+      images: ad && ad.images ? ad.images : [], 
     },
   });
 
   const category = watch('category');
-
-  useEffect(() => {
-    // Update sub categories based on watch category
-    console.log(category);
-    // if (category) {
-    //   setSubCategories(categories[Number(category) - 1].subCategories);
-    // } else {
-    //   setSubCategories(null);
-    // }
-  }, [category, setSubCategories, categories]);
-  console.log(errors);
   const images = watch('image');
+  const [defaultImages, setDefaultImages] = useState<any>([]);
   const [previewImageUrls, setPreviewImageUrls] = useState<any>([]);
   const [heroIndex, setHeroIndex] = useState<number | null>(null);
-  const [collapseRealEstate, setCollapseRealEstate] = useState<boolean>(false);
-  const toggleCollapse = (
-    field: boolean,
-    formToCollapse: (field: boolean) => void
-  ) => {
-    formToCollapse(!field);
-  };
 
   const onSubmit = async (values: z.infer<typeof adFormSchema>) => {
     const formData = new FormData();
@@ -75,41 +80,66 @@ const AdForm = ({ editing, categories }: Props) => {
       images: [],
     };
 
-    let uploadedImageData = null;
+    // Post to upload, and api ads for creation if not editing.
+    if (!editing) {
 
-    if (values.image.length > 0) {
-      for (let i = 0; i < values.image.length; i++) {
-        formData.append('files', values.image[i]);
+      let uploadedImageData = null;
+
+      if (values.image.length > 0) {
+        for (let i = 0; i < values.image.length; i++) {
+          formData.append('files', values.image[i]);
+        }
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        uploadedImageData = await uploadResponse.json();
+        if (heroIndex) {
+          uploadedImageData[heroIndex].hero = true;
+        }
+        submitValues = {
+          ...submitValues,
+          images: uploadedImageData,
+        };
       }
-      const uploadResponse = await fetch('/api/upload', {
+
+      const response = await fetch('/api/ads', {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify({ ...submitValues }),
       });
-      uploadedImageData = await uploadResponse.json();
-      if (heroIndex) {
-        uploadedImageData[heroIndex].hero = true;
+
+      if (response.status === 200) {
+        router.push(`/profile/${session?.user.id}/ads`);
+        router.refresh();
       }
+      const data = await response.json();
+    } else {
       submitValues = {
         ...submitValues,
-        images: uploadedImageData,
-      };
-    }
+        images: defaultImages
+      }
+      const response = await fetch(`/api/ads/${ad?.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ ...submitValues }),
+      });
 
-    const response = await fetch('/api/ads', {
-      method: 'POST',
-      body: JSON.stringify({ ...submitValues }),
-    });
-
-    if (response.status === 200) {
-      router.push(`/profile/${session?.user.id}/ads`);
-      router.refresh();
+      if (response.status === 200) {
+        router.push(`/profile/${session?.user.id}/ads`);
+        router.refresh();
+      }
     }
-    const data = await response.json();
   };
 
   const handleHeroSelect = (e: any) => {
     setHeroIndex(e.target.id);
   };
+
+  useEffect(() => {
+    if (ad && ad.images.length > 0) {
+      setDefaultImages(ad.images);
+    } 
+  }, [ad]);
+
   useEffect(() => {
     let imageUrlsToSet = [];
     if (images) {
@@ -117,8 +147,13 @@ const AdForm = ({ editing, categories }: Props) => {
         imageUrlsToSet.push(URL.createObjectURL(images[i]));
       }
     }
+    if (defaultImages) {
+      for (let i = 0; i < defaultImages.length; i++) {
+        imageUrlsToSet.push(defaultImages[i].url);
+      }
+    }
     setPreviewImageUrls(imageUrlsToSet);
-  }, [images]);
+  }, [images, defaultImages]);
 
   return (
     <form
@@ -169,74 +204,6 @@ const AdForm = ({ editing, categories }: Props) => {
           {...register('title')}
         />
       </div>
-      {/* {category && categories[Number(category) - 1].name === 'Real Estate' && (
-        <div className='col-span-12'>
-          <div className='flex justify-between items-center mb-4'>
-            <h3>Real Estate Fields</h3>
-            <button
-              onClick={() =>
-                toggleCollapse(collapseRealEstate, setCollapseRealEstate)
-              }
-              type='button'
-            >
-              {collapseRealEstate ? 'Open' : 'Collapse'}
-            </button>
-          </div>
-          <div
-            className={twMerge(
-              'grid grid-cols-12 gap-4',
-              collapseRealEstate ? 'hidden' : ''
-            )}
-          >
-            <div className='col-span-12 md:col-span-6'>
-              <select className='border w-full p-2'>
-                <option value=''>Select building type</option>
-                <option value='apartment'>Apartment</option>
-                <option value='house'>House</option>
-              </select>
-            </div>
-            <div className='col-span-12 md:col-span-6'>
-              <input
-                placeholder='How many rooms?'
-                className='border w-full p-2'
-                type='text'
-              />
-            </div>
-            <label className='block col-span-12' htmlFor=''>
-              Utilities
-            </label>
-            <div className='col-span-12 md:col-span-4'>
-              <select className='border w-full p-2'>
-                <option value=''>Power included?</option>
-                <option value='true'>yes</option>
-                <option value='no'>no</option>
-              </select>
-            </div>
-            <div className='col-span-12 md:col-span-4'>
-              <select className='border w-full p-2'>
-                <option value=''>Hydro included?</option>
-                <option value='yes'>yes</option>
-                <option value='no'>no</option>
-              </select>
-            </div>
-            <div className='col-span-12 md:col-span-4'>
-              <select className='border w-full p-2'>
-                <option value=''>Heat included?</option>
-                <option value='yes'>yes</option>
-                <option value='no'>no</option>
-              </select>
-            </div>
-            <div className='col-span-12 md:col-span-4'>
-              <select className='border w-full p-2'>
-                <option value=''>Wifi included?</option>
-                <option value='yes'>yes</option>
-                <option value='no'>no</option>
-              </select>
-            </div>
-          </div>
-          <hr className='mt-4' />
-        </div>
-      )} */}
       <div className='col-span-12'>
         <input
           className='border w-full p-2'
@@ -287,7 +254,7 @@ const AdForm = ({ editing, categories }: Props) => {
       </div>
       <div className='w-full lg:w-1/3 mx-auto mt-4 col-span-12'>
         <button className='bg-primary w-full py-4 text-white mt-2 rounded-full'>
-          Create Ad
+          {!editing ? 'Create Ad' : "Edit"}
         </button>
       </div>
     </form>

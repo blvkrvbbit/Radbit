@@ -1,8 +1,10 @@
 import Link from 'next/link';
 
+// TODO: Finish building out footer and clearing up white space
+// Find dribble shots, or something for inspiration.
 const Footer = () => {
   return (
-    <footer className='mt-auto py-4 bg-gray-200/50 text-black'>
+    <footer className='mt-auto py-4 text-black'>
       <div className='container'>
         <div className='mb-4'>
           <div className='inline-block pb-2 font-bold'>Categories</div>

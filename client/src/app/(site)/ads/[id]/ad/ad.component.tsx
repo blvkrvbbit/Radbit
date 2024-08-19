@@ -21,6 +21,7 @@ const ViewAd = ({ ad }: Props) => {
   const toggleViewMore = () => {
     setViewMore(!viewMore);
   };
+
   return (
     <div
       className={twMerge(
@@ -49,11 +50,12 @@ const ViewAd = ({ ad }: Props) => {
   );
 };
 
+// TODO: Restyle the User Information component. Look for design inspiration.
 export const UserInformation = ({ ad }: Props) => {
   return (
     <div
       className={twMerge(
-        'shadow-xl col-span-12 p-4 border h-[12rem]',
+        'shadow-md col-span-12 p-4 border h-[12rem]',
         // Medium Screen
         'md:col-span-6',
         // Large Screen

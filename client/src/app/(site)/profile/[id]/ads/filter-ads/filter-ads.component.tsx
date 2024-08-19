@@ -85,31 +85,30 @@ const FilterAds = ({ ads }: Props) => {
   return (
     <>
       <div className='flex justify-between items-start'>
-        <h1 className='text-2xl'>My Ads</h1>
+        <h1 className='text-2xl font-bold'>My Ads</h1>
         <div className='flex justify-end mb-4'>
           <input
             onChange={handleChange}
-            className='border p-2 shadow-lg'
+            className='border p-2 shadow-md'
             name='filter'
             type='text'
             placeholder='Search'
           />
         </div>
       </div>
-      {/* TODO: Add Pagination */}
       {ads.length > 0 && (
         <div className='flex justify-end mb-4 gap-2 items-center'>
           <div className='mr-[1rem] text-gray-400'>
             Page {`${page + 1} of ${pages.length}`}
           </div>
           <button
-            className=' border-primary border-[0.05rem] px-4 py-1'
+            className='shadow-md border-primary border-[0.05rem] px-4 py-1'
             onClick={decrementPage}
           >
             <Icon className='text-primary' icon='mdi:chevron-left' />
           </button>
           <button
-            className='border-primary border-[0.05rem] px-4 py-1'
+            className='shadow-md border-primary border-[0.05rem] px-4 py-1'
             onClick={incrementPage}
           >
             <Icon className='text-primary' icon='mdi:chevron-right' />

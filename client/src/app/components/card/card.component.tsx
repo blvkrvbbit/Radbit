@@ -14,7 +14,7 @@ const Card = ({ ad }: Props) => {
   return (
     <Link
       href={`/ads/${ad.id}`}
-      className='shadow-lg border p-4 flex gap-4 col-span-12 md:col-span-6  xl:col-span-4'
+      className='shadow-md border p-4 flex gap-4 col-span-12 md:col-span-6  xl:col-span-4'
     >
       <div className='relative w-[8rem] h-[6rem]'>
         {ad.images.length > 0 && (
@@ -60,20 +60,25 @@ export const UserAdsCard = ({ ad }: UserAdCardProps) => {
   return (
     <Link
       href={`/ads/${ad.id}`}
-      className='shadow-lg border p-4 flex gap-4 col-span-12 md:col-span-6 relative'
+      className='shadow-md border p-4 flex gap-4 col-span-12 md:col-span-6 relative'
     >
+      <Link href={`/ads/${ad.id}/edit`}>
+        <button className='absolute right-10 bottom-4 z-10'>
+          <Icon className='text-gray-500/40 hover:text-primary'  fontSize={20} icon="ph:pencil-simple-fill" />
+        </button>
+      </Link>
       <button
         className='absolute right-3 bottom-4 z-10'
-        onClick={handleDelete}
         id={`${ad.id}`}
+        onClick={handleDelete}
         type='button'
       >
         <Icon
           id={`${ad.id}`}
-          className='text-gray-500/20 hover:text-red-500'
+          className='text-gray-500/40 hover:text-red-500'
           fontSize={20}
           icon='mdi:trash'
-        />
+          />
       </button>
       <div className='relative w-[8rem] h-[6rem]'>
         {ad.images.length > 0 && (
