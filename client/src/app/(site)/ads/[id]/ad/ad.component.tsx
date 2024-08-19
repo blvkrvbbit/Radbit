@@ -37,7 +37,7 @@ const ViewAd = ({ ad }: Props) => {
         )}
       >
         <Title ad={ad} />
-        <ImageContainer ad={ad} />
+        {ad.images.length > 0 && <ImageContainer ad={ad} />}
 
         {/* TODO add ability to toggle overflow */}
 

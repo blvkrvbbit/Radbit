@@ -10,7 +10,10 @@ import FilterAds from './filter-ads/filter-ads.component';
 const MyAdsPage = async () => {
   const session = await getServerSession(authOptions);
   const response = await fetch(
-    `${process.env.NEXT_URL}/api/ads/user/${session?.user.id}`
+    `${process.env.NEXT_URL}/api/ads/user/${session?.user.id}`,
+    {
+      cache: 'no-store',
+    }
   );
   const ads = await response.json();
 

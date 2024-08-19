@@ -1,7 +1,7 @@
 'use client';
 
 import Ad from '@/app/types/ad.type';
-import Card, { CustomCard } from '../card/card.component';
+import Card, { UserAdsCard } from '../card/card.component';
 
 type Props = {
   ads: Ad[] | [];
@@ -27,7 +27,7 @@ export const CustomCardList = ({ ads }: CustomProps) => {
     <div className='relative grid grid-cols-12 gap-4'>
       {ads &&
         ads.map((ad: Ad) => {
-          return <CustomCard key={ad.id} ad={ad} />;
+          return <UserAdsCard key={ad.id} ad={ad} />;
         })}
     </div>
   );

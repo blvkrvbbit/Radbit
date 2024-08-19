@@ -12,7 +12,7 @@ const ProfileLayout = ({ children }: Props) => {
   const { data: session } = useSession();
   return (
     <div className='container grid grid-cols-12   mt-12 gap-8'>
-      <div className='hidden md:flex p-4 col-span-2  flex-col h-[15rem] space-y-4 border'>
+      <div className='hidden shadow-lg md:flex p-4 col-span-2  flex-col h-[15rem] space-y-4 border'>
         <Link href={`/profile/${session?.user.id}/`}>Home</Link>
         <Link href={`/profile/${session?.user.id}/edit-profile`}>
           Edit Profile

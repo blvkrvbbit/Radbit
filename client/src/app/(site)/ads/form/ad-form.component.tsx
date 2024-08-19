@@ -36,7 +36,9 @@ const AdForm = ({ editing, categories }: Props) => {
     formState: { errors },
   } = useForm<z.infer<typeof adFormSchema>>({
     resolver: zodResolver(adFormSchema),
-    defaultValues: {},
+    defaultValues: {
+      subCategory: '',
+    },
   });
 
   const category = watch('category');
@@ -99,7 +101,7 @@ const AdForm = ({ editing, categories }: Props) => {
     });
 
     if (response.status === 200) {
-      router.push(`/profile/${session?.user.id}`);
+      router.push(`/profile/${session?.user.id}/ads`);
       router.refresh();
     }
     const data = await response.json();

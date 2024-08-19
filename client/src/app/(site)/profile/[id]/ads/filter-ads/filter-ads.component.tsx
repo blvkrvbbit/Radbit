@@ -3,7 +3,11 @@
 import { CustomCardList } from '@/app/components/card-list/card-list.component';
 import Ad from '@/app/types/ad.type';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, useEffect, useState, MouseEvent } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 type Props = {
   ads: Ad[];
@@ -14,11 +18,20 @@ type Props = {
  * FIXME: Fix the type error, and replace any with correct typing.
  */
 const FilterAds = ({ ads }: Props) => {
+  const { data: session } = useSession();
+
+  const router = useRouter();
   const [filteredAds, setFilteredAds] = useState(ads);
-  const [pages, setPages] = useState<Ad[]>([]);
+  const [pages, setPages] = useState<any>([]);
   const [page, setPage] = useState<number>(0);
   // TODO: Add more filters not just by titles
   const pageLimit = 6;
+
+  useEffect(() => {
+    // If ads was updated by delete, creation which triggered a router refresh
+    // updated filtered ads with new information
+    setFilteredAds(ads);
+  }, [ads]);
 
   useEffect(() => {
     let adsArr: any = [];
@@ -37,6 +50,12 @@ const FilterAds = ({ ads }: Props) => {
     setPages(adsArr);
   }, [filteredAds]);
 
+  useEffect(() => {
+    if (page > 0 && page + 1 > pages.length) {
+      setPage(page - 1);
+    }
+  }, [ads, page, pages]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const filtered = ads.filter((ad: Ad) => {
@@ -44,6 +63,7 @@ const FilterAds = ({ ads }: Props) => {
         return ad;
       }
     });
+
     setFilteredAds(filtered);
     if (value === '') {
       setFilteredAds(ads);
@@ -69,7 +89,7 @@ const FilterAds = ({ ads }: Props) => {
         <div className='flex justify-end mb-4'>
           <input
             onChange={handleChange}
-            className='border p-2'
+            className='border p-2 shadow-lg'
             name='filter'
             type='text'
             placeholder='Search'
@@ -77,24 +97,42 @@ const FilterAds = ({ ads }: Props) => {
         </div>
       </div>
       {/* TODO: Add Pagination */}
-      <div className='flex justify-end mb-4 gap-2 items-center'>
-        <div className='mr-[1rem] text-gray-400'>
-          Page {`${page + 1} of ${pages.length}`}
+      {ads.length > 0 && (
+        <div className='flex justify-end mb-4 gap-2 items-center'>
+          <div className='mr-[1rem] text-gray-400'>
+            Page {`${page + 1} of ${pages.length}`}
+          </div>
+          <button
+            className=' border-primary border-[0.05rem] px-4 py-1'
+            onClick={decrementPage}
+          >
+            <Icon className='text-primary' icon='mdi:chevron-left' />
+          </button>
+          <button
+            className='border-primary border-[0.05rem] px-4 py-1'
+            onClick={incrementPage}
+          >
+            <Icon className='text-primary' icon='mdi:chevron-right' />
+          </button>
         </div>
-        <button
-          className=' border-primary border-[0.05rem] px-4 py-1'
-          onClick={decrementPage}
+      )}
+      {ads.length === 0 ? (
+        <div
+          className={twMerge(
+            'flex flex-col justify-center items-center',
+            'w-full  border  h-[11.5rem] text-2xl shadow-lg'
+          )}
         >
-          <Icon className='text-primary' icon='mdi:chevron-left' />
-        </button>
-        <button
-          className='border-primary border-[0.05rem] px-4 py-1'
-          onClick={incrementPage}
-        >
-          <Icon className='text-primary' icon='mdi:chevron-right' />
-        </button>
-      </div>
-      <CustomCardList ads={pages[page]} />
+          <div>No Ads Posted.</div>
+          <Link href='/ads/create'>
+            <button className=' border border-primary text-primary  text-base mt-8 px-4 py-2 rounded-full'>
+              Create Ad
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <CustomCardList ads={pages[page]} />
+      )}
     </>
   );
 };
