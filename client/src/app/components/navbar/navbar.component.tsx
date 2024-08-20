@@ -68,7 +68,12 @@ const Navbar = () => {
             ) : (
               <>
                 <Link href='/auth/register'>Register</Link>
-                <Link href='/auth/login'>Login</Link>
+                <Link
+                  className='border border-primary text-primary rounded-full hover:bg-primary hover:text-white px-4 py-2'
+                  href='/auth/login'
+                >
+                  Login
+                </Link>
               </>
             )}
           </div>
