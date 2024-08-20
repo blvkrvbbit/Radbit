@@ -72,7 +72,7 @@ const AdForm = ({ editing, ad, categories }: Props) => {
   const [defaultImages, setDefaultImages] = useState<any>([]);
   const [previewImageUrls, setPreviewImageUrls] = useState<any>([]);
   const [heroIndex, setHeroIndex] = useState<number | null>(null);
-
+  console.log(defaultImages);
   const onSubmit = async (values: z.infer<typeof adFormSchema>) => {
     const formData = new FormData();
     let submitValues: any = {
@@ -86,6 +86,7 @@ const AdForm = ({ editing, ad, categories }: Props) => {
 
     // Post to upload, and api ads for creation if not editing.
     if (!editing) {
+      // CREATING:
       let uploadedImageData = null;
 
       if (values.image.length > 0) {
@@ -117,11 +118,45 @@ const AdForm = ({ editing, ad, categories }: Props) => {
       }
       const data = await response.json();
     } else {
+      let uploadedImageData = [];
+      let allImages: any = [...defaultImages];
+      // EDITING:
+      if (values.image.length > 0) {
+        for (let i = 0; i < values.image.length; i++) {
+          formData.append('files', values.image[i]);
+        }
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        uploadedImageData = await uploadResponse.json();
+      }
+      if (allImages.length > 0 || uploadedImageData.length > 0) {
+        allImages = [...defaultImages, ...uploadedImageData];
+      }
+
+      allImages = allImages.map((img: any, i: number) => {
+        if (heroIndex == i) {
+          return {
+            ...img,
+            hero: true,
+          };
+        } else {
+          return {
+            ...img,
+            hero: false,
+          };
+        }
+      });
       // TODO: Add in image editing, and swapping of hero image.
       submitValues = {
         ...submitValues,
-        images: defaultImages,
+        images: [
+          allImages.slice(0, defaultImages.length), // default images
+          allImages.slice(defaultImages.length, allImages.length), // new images
+        ],
       };
+
       const response = await fetch(`/api/ads/${ad?.id}`, {
         method: 'PUT',
         body: JSON.stringify({ ...submitValues }),
@@ -146,16 +181,17 @@ const AdForm = ({ editing, ad, categories }: Props) => {
 
   useEffect(() => {
     let imageUrlsToSet = [];
-    if (images) {
-      for (let i = 0; i < images.length; i++) {
-        imageUrlsToSet.push(URL.createObjectURL(images[i]));
-      }
-    }
     if (defaultImages) {
       for (let i = 0; i < defaultImages.length; i++) {
         imageUrlsToSet.push(defaultImages[i].url);
       }
     }
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        imageUrlsToSet.push(URL.createObjectURL(images[i]));
+      }
+    }
+
     setPreviewImageUrls(imageUrlsToSet);
   }, [images, defaultImages]);
 
@@ -257,10 +293,11 @@ const AdForm = ({ editing, ad, categories }: Props) => {
         <input type='file' {...register('image')} multiple />
       </div>
       <div className='w-full lg:w-1/3 mx-auto mt-4 col-span-12'>
-        <button className='bg-primary w-full flex justify-center items-center gap-2 py-4 text-white mt-2 rounded-full'>
+        <button
+          className='bg-primary w-full flex justify-center items-center gap-2 py-4 text-white mt-2 rounded-full'
+          disabled={isSubmitting}
+        >
           {submitButtonText(editing!, isSubmitting)}
-          {/* {!editing && isSubmitting && 'Creating ad...'}
-           */}
         </button>
       </div>
     </form>

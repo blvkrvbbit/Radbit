@@ -40,35 +40,61 @@ export async function GET(
   }
 }
 
-export async function PUT(req: Request,
+export async function PUT(
+  req: Request,
   { params }: { params: { id: string } }
 ) {
-  const { title, price, description, images, category } = await req.json();
+  // TODO: Add ability to add new images if found
+
+  const { title, price, description, images, uploadedImages, heroIndex } =
+    await req.json();
 
   const session = await getServerSession(authOptions);
-  const ad = await db.ad.findUnique({
-    where: {
-      id: Number(params.id)
-    }
-  });
-  console.log(ad?.userId, session?.user.id);
+
+  console.log('Image info', images, heroIndex);
   try {
+    // Add all the new uploaded images
+    if (images.length > 1) {
+      const imagesToCreate = images[1].map((image: any) => ({
+        adId: Number(params.id),
+        url: image.url,
+        hero: image.hero,
+      }));
+
+      await db.image.createMany({
+        data: imagesToCreate,
+      });
+    }
+
     const ad = await db.ad.findUnique({
       where: {
-        id: Number(params.id)
-      }
+        id: Number(params.id),
+      },
     });
 
     if (ad?.userId == session?.user.id) {
-      const updatedAd = await db.ad.update({
+      if (images) {
+        for (let i = 0; i < images[0].length; i++) {
+          let updated = await db.image.update({
+            where: {
+              id: Number(images[0][i].id),
+            },
+            data: {
+              url: images[0][i].url,
+              hero: images[0][i].hero,
+            },
+          });
+        }
+      }
+      await db.ad.update({
         where: {
-          id: Number(params.id)
+          id: Number(params.id),
         },
         data: {
           title,
           price,
           description,
-        }
+        },
       });
       return NextResponse.json(
         {
@@ -88,6 +114,7 @@ export async function PUT(req: Request,
       }
     );
   } catch (err: any) {
+    console.log(err);
     return NextResponse.json(
       {
         message: err.message,
