@@ -1,5 +1,5 @@
 'use client';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, UseFormRegister } from 'react-hook-form';
 import adFormSchema from './ad-form.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -12,10 +12,12 @@ import { useRouter } from 'next/navigation';
 import Tiptap from '@/app/components/tiptap/tiptap';
 import { twMerge } from 'tailwind-merge';
 import Ad from '@/app/types/ad.type';
+import FormField from '@/app/components/form-field/form-field.component';
+import DeleteImageButton from './delete-image-button/delete-image-button.component';
 
 type Props = {
   editing?: boolean;
-  ad?: Ad,
+  ad?: Ad;
   categories: {
     id: number;
     name: string;
@@ -31,20 +33,22 @@ const AdForm = ({ editing, ad, categories }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [subCategories, setSubCategories] = useState<any>(null);
-  const defaultValues = ad ? {
-    title: ad.title,
-    category: ad.categories,
-    price: ad.price,
-    description: ad.description,
-    images: ad.images
-  } : {
-    title: '',
-    category: '',
-    price: null,
-    subCategory: '',
-    description: '',
-    images: []
-  };
+  const defaultValues = ad
+    ? {
+        title: ad.title,
+        category: ad.categories,
+        price: ad.price,
+        description: ad.description,
+        images: ad.images,
+      }
+    : {
+        title: '',
+        category: '',
+        price: null,
+        subCategory: '',
+        description: '',
+        images: [],
+      };
   const {
     register,
     handleSubmit,
@@ -59,7 +63,7 @@ const AdForm = ({ editing, ad, categories }: Props) => {
       price: ad && ad.price ? ad.price : 0,
       subCategory: '',
       description: ad && ad.description ? ad.description : '',
-      images: ad && ad.images ? ad.images : [], 
+      images: ad && ad.images ? ad.images : [],
     },
   });
 
@@ -82,7 +86,6 @@ const AdForm = ({ editing, ad, categories }: Props) => {
 
     // Post to upload, and api ads for creation if not editing.
     if (!editing) {
-
       let uploadedImageData = null;
 
       if (values.image.length > 0) {
@@ -114,10 +117,11 @@ const AdForm = ({ editing, ad, categories }: Props) => {
       }
       const data = await response.json();
     } else {
+      // TODO: Add in image editing, and swapping of hero image.
       submitValues = {
         ...submitValues,
-        images: defaultImages
-      }
+        images: defaultImages,
+      };
       const response = await fetch(`/api/ads/${ad?.id}`, {
         method: 'PUT',
         body: JSON.stringify({ ...submitValues }),
@@ -137,7 +141,7 @@ const AdForm = ({ editing, ad, categories }: Props) => {
   useEffect(() => {
     if (ad && ad.images.length > 0) {
       setDefaultImages(ad.images);
-    } 
+    }
   }, [ad]);
 
   useEffect(() => {
@@ -181,20 +185,6 @@ const AdForm = ({ editing, ad, categories }: Props) => {
           })}
         </select>
       </div>
-      {subCategories && (
-        <div className='col-span-12 md:col-span-6'>
-          <select className='border w-full p-2' {...register('subCategory')}>
-            <option value=''>Select Sub Category</option>
-            {subCategories.map((c: { id: number; name: string }) => {
-              return (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-      )}
 
       <div className='col-span-12'>
         <input
@@ -232,9 +222,23 @@ const AdForm = ({ editing, ad, categories }: Props) => {
               id={`${id}`}
               key={id}
             >
+              {/* TODO: If default images display hero image*/}
               <PreviewImage id={`${id}`} key={id} src={image} />
+              {editing && (
+                <DeleteImageButton
+                  defaultImages={defaultImages}
+                  id={id}
+                  setDefaultImages={setDefaultImages}
+                  router={router}
+                />
+              )}
+
               {heroIndex == id && (
-                <div className='absolute flex justify-end top-0 z-10 w-full bg-[#02020A]/60 h-full'>
+                <div
+                  className={twMerge(
+                    'absolute flex justify-end top-0 z-10 w-full bg-[#02020A]/60 h-full'
+                  )}
+                >
                   <Icon
                     icon='line-md:star-alt-filled'
                     fontSize={24}
@@ -254,7 +258,7 @@ const AdForm = ({ editing, ad, categories }: Props) => {
       </div>
       <div className='w-full lg:w-1/3 mx-auto mt-4 col-span-12'>
         <button className='bg-primary w-full py-4 text-white mt-2 rounded-full'>
-          {!editing ? 'Create Ad' : "Edit"}
+          {!editing ? 'Create Ad' : 'Edit'}
         </button>
       </div>
     </form>
