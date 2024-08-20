@@ -11,6 +11,7 @@ import { useState } from 'react';
 import './ad.styles.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import timeSince from '@/app/utils/time-since';
+import { adjustImage } from '@/app/utils/adjust-image.utils';
 
 type Props = {
   ad: Ad;
@@ -32,7 +33,7 @@ const ViewAd = ({ ad }: Props) => {
       <div
         className={twMerge(
           // Base style
-          'col-span-12 p-4',
+          'col-span-12',
           // Large screen size
           'lg:col-span-8 '
         )}
@@ -133,7 +134,7 @@ export const ImageContainer = ({ ad }: Props) => {
           className={twMerge(
             'col-span-12  h-[8rem] flex ',
             // Medium screen size
-            'md:flex-col md:h-auto md:col-span-2'
+            'md:flex-col md:h-auto md:col-span-2 gap-2'
           )}
         >
           {ad.images
@@ -153,7 +154,11 @@ export const ImageContainer = ({ ad }: Props) => {
                     'lg:h-[8.3333rem]'
                   )}
                 >
-                  <Image src={image.url} layout='fill' alt={ad.title} />
+                  <Image
+                    src={adjustImage(400, 800, image.url)}
+                    layout='fill'
+                    alt={ad.title}
+                  />
                 </div>
               );
             })}

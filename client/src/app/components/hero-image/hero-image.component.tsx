@@ -1,4 +1,5 @@
 'use client';
+import { adjustImage } from '@/app/utils/adjust-image.utils';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -28,9 +29,21 @@ const HeroImage = ({ images, title, className }: Props) => {
 
   // If hero image select it else return a default of first index.
   if (heroImage) {
-    return <Image src={heroImage.url} layout='fill' alt={title} />;
+    return (
+      <Image
+        src={adjustImage(500, 500, heroImage.url)}
+        layout='fill'
+        alt={title}
+      />
+    );
   } else {
-    return <Image src={images[0].url} layout='fill' alt={title} />;
+    return (
+      <Image
+        src={adjustImage(400, 400, images[0].url)}
+        layout='fill'
+        alt={title}
+      />
+    );
   }
 };
 
