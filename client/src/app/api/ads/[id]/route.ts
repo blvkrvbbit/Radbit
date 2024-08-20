@@ -46,8 +46,15 @@ export async function PUT(
 ) {
   // TODO: Add ability to add new images if found
 
-  const { title, price, description, images, uploadedImages, heroIndex } =
-    await req.json();
+  const {
+    title,
+    price,
+    description,
+    images,
+    uploadedImages,
+    heroIndex,
+    category,
+  } = await req.json();
 
   const session = await getServerSession(authOptions);
 
@@ -70,12 +77,17 @@ export async function PUT(
       where: {
         id: Number(params.id),
       },
+      include: {
+        categories: true,
+      },
     });
+    console.log(ad);
+    console.log(category);
 
     if (ad?.userId == session?.user.id) {
       if (images) {
         for (let i = 0; i < images[0].length; i++) {
-          let updated = await db.image.update({
+          await db.image.update({
             where: {
               id: Number(images[0][i].id),
             },
@@ -94,6 +106,12 @@ export async function PUT(
           title,
           price,
           description,
+          categories: {
+            disconnect: [{ id: ad!.categories[0].id }],
+            connect: {
+              id: Number(category),
+            },
+          },
         },
       });
       return NextResponse.json(
