@@ -54,7 +54,7 @@ const AdForm = ({ editing, ad, categories }: Props) => {
     handleSubmit,
     watch,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitted },
   } = useForm<z.infer<typeof adFormSchema>>({
     resolver: zodResolver(adFormSchema),
     defaultValues: {
@@ -257,12 +257,46 @@ const AdForm = ({ editing, ad, categories }: Props) => {
         <input type='file' {...register('image')} multiple />
       </div>
       <div className='w-full lg:w-1/3 mx-auto mt-4 col-span-12'>
-        <button className='bg-primary w-full py-4 text-white mt-2 rounded-full'>
-          {!editing ? 'Create Ad' : 'Edit'}
+        <button className='bg-primary w-full flex justify-center items-center gap-2 py-4 text-white mt-2 rounded-full'>
+          {submitButtonText(editing!, isSubmitting)}
+          {/* {!editing && isSubmitting && 'Creating ad...'}
+           */}
         </button>
       </div>
     </form>
   );
+};
+
+const submitButtonText = (editing: boolean, isSubmitting: boolean) => {
+  if (!editing && !isSubmitting) {
+    return 'Create Ad';
+  }
+
+  if (editing && !isSubmitting) {
+    return 'Edit Ad';
+  }
+
+  if (editing && isSubmitting) {
+    return (
+      <>
+        Editing ad
+        <Icon
+          fontSize={20}
+          className='text-white'
+          icon='line-md:loading-alt-loop'
+        />
+      </>
+    );
+  }
+
+  if (!editing && isSubmitting) {
+    return (
+      <>
+        Creating ad
+        <Icon icon='line-md:loading-alt-loop' />
+      </>
+    );
+  }
 };
 
 export default AdForm;
