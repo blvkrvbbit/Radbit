@@ -68,6 +68,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link href='/auth/register'>Register</Link>
+                <Link href='/auth/login'>Login</Link>
               </>
             )}
           </div>
