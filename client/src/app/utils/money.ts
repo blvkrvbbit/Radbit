@@ -9,12 +9,15 @@ export const formatMoneyToString = (amount: number) => {
   ];
   let format = `${amount}`;
   // loop through 6 times
-  for (let i = 0, maxLength = 4; i < 6; i++, maxLength++) {
-    if (format.length === maxLength) {
-      console.log(maxLength);
-      return addComma(pos[i], format);
+  if (format.length >= 4) {
+    for (let i = 0, maxLength = 4; i < 6; i++, maxLength++) {
+      if (format.length === maxLength) {
+        console.log(maxLength);
+        return addComma(pos[i], format);
+      }
     }
   }
+  return format;
 };
 
 const addComma = (pos: number[], str: string) => {

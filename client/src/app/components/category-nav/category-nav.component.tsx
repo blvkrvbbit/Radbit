@@ -8,7 +8,7 @@ const CategoryNav = async () => {
   const categories = await response.json();
 
   return (
-    <div className='border-b shadow-sm py-8'>
+    <div className='border-b shadow-sm py-8 md:py-12'>
       <div className='container'>
         <h1 className='mb-4 font-bold tracking-wide text-4xl'>
           Free Classified Ads
