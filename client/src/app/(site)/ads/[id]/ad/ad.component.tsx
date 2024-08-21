@@ -12,6 +12,7 @@ import './ad.styles.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import timeSince from '@/app/utils/time-since';
 import { adjustImage } from '@/app/utils/adjust-image.utils';
+import { formatMoneyToString } from '@/app/utils/money';
 
 type Props = {
   ad: Ad;
@@ -47,6 +48,26 @@ const ViewAd = ({ ad }: Props) => {
       </div>
 
       <UserInformation ad={ad} />
+      <div className='col-span-12'>
+        {/* TODO: Prepoluate with ads with similar categories/sub categories */}
+        <h2 className='mb-4 font-bold'>Ads you might like:</h2>
+        <div
+          className={twMerge(
+            'col-span-12 space-y-4 ',
+            'md:space-y-0 md:grid md:grid-cols-4 lg:grid-cols-6 md:gap-4'
+          )}
+        >
+          <div className='bg-gray-500/20 h-20 flex items-center justify-center'>
+            placeholder
+          </div>
+          <div className='bg-gray-500/20 h-20 flex items-center justify-center'>
+            placeholder
+          </div>
+          <div className='bg-gray-500/20 h-20 flex items-center justify-center'>
+            placeholder
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -102,7 +123,9 @@ export const Title = ({ ad }: Props) => {
     <div className='mx-auto'>
       <div className='flex justify-between mb-4 items-center'>
         <h1 className='font-bold tracking-normal my-4 text-xl'>{ad.title}</h1>
-        <p className='font-bold text-2xl text-green-600'>${ad.price}</p>
+        <p className='font-bold text-2xl text-green-600'>
+          ${formatMoneyToString(ad.price)}
+        </p>
       </div>
       <hr className='mb-4' />
     </div>

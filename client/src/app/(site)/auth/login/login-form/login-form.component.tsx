@@ -40,12 +40,12 @@ const LoginForm = () => {
 
   return (
     <form
-      className='max-w-[398px] mx-auto flex flex-col gap-4 mt-[4rem]'
+      className='border shadow-lg  p-8 rounded-md max-w-[398px] mx-auto flex flex-col gap-4 mt-[4rem]'
       action=''
       onSubmit={handleSubmit(onSubmit)}
     >
       <h1 className='text-2xl'>Login</h1>
-
+      <hr />
       <div>
         <input
           className='border w-full p-2'
@@ -66,11 +66,11 @@ const LoginForm = () => {
       </div>
       <p>
         Don&apos;t have an account?{' '}
-        <Link className='underline' href='/auth/register'>
+        <Link className='text-primary underline' href='/auth/register'>
           Register
         </Link>
       </p>
-      <button className='bg-[#222222] text-white py-4'>Login</button>
+      <button className='bg-primary rounded-full text-white py-4'>Login</button>
     </form>
   );
 };

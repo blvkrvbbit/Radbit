@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { useRouter } from 'next/navigation';
 import { MouseEvent } from 'react';
 import { useSession } from 'next-auth/react';
+import { formatMoneyToString } from '@/app/utils/money';
 type Props = {
   ad: Ad;
 };
@@ -24,7 +25,9 @@ const Card = ({ ad }: Props) => {
       <div className='w-full'>
         <div className='flex flex-wrap justify-between items-center'>
           <h3>{ad.title.slice(0, 20)}...</h3>
-          <div className='text-green-600 font-bold text-lg'>${ad.price}</div>
+          <div className='text-green-600 font-bold text-lg'>
+            ${formatMoneyToString(ad.price)}
+          </div>
         </div>
         <RenderHTML
           className='mt-4 md:hidden'
@@ -64,7 +67,11 @@ export const UserAdsCard = ({ ad }: UserAdCardProps) => {
     >
       <Link href={`/ads/${ad.id}/edit`}>
         <button className='absolute right-10 bottom-4 z-10'>
-          <Icon className='text-gray-500/40 hover:text-primary'  fontSize={20} icon="ph:pencil-simple-fill" />
+          <Icon
+            className='text-gray-500/40 hover:text-primary'
+            fontSize={20}
+            icon='ph:pencil-simple-fill'
+          />
         </button>
       </Link>
       <button
@@ -78,7 +85,7 @@ export const UserAdsCard = ({ ad }: UserAdCardProps) => {
           className='text-gray-500/40 hover:text-red-500'
           fontSize={20}
           icon='mdi:trash'
-          />
+        />
       </button>
       <div className='relative w-[8rem] h-[6rem]'>
         {ad.images.length > 0 && (
@@ -88,7 +95,9 @@ export const UserAdsCard = ({ ad }: UserAdCardProps) => {
       <div className='w-full'>
         <div className='flex justify-between items-center'>
           <h3>{ad.title.slice(0, 20)}...</h3>
-          <div className='text-green-600 font-bold text-lg'>${ad.price}</div>
+          <div className='text-green-600 font-bold text-lg'>
+            ${formatMoneyToString(ad.price)}
+          </div>
         </div>
         <RenderHTML
           className='mt-4 md:hidden'

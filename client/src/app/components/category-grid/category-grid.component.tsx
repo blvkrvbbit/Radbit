@@ -58,8 +58,9 @@ const CategoryGrid = () => {
     <div>
       <h3 className='mb-4 font-semibold text-lg'>Popular Categories</h3>
       <div className='hidden  md:grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-        {categoryGridItems.map((item: CategoryItem) => (
+        {categoryGridItems.map((item: CategoryItem, key: number) => (
           <Link
+            key={key}
             href={item.link}
             className='w-full relative  h-[15rem]  flex justify-center items-center'
           >
@@ -82,8 +83,9 @@ const CategoryGrid = () => {
           'md:hidden'
         )}
       >
-        {categoryGridItems.map((item: CategoryItem) => (
+        {categoryGridItems.map((item: CategoryItem, key: number) => (
           <Link
+            key={key}
             href={item.link}
             className='w-full relative  h-[15rem]   justify-center items-center snap-start shrink-0  m-2  grid place-items-center'
           >

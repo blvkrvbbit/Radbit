@@ -36,11 +36,12 @@ const RegisterForm = () => {
 
   return (
     <form
-      className='max-w-[430px] mx-auto flex flex-col gap-4 mt-[4rem]'
+      className='border shadow-lg  p-8 rounded-md max-w-[398px] mx-auto flex flex-col gap-4 mt-[4rem]'
       action=''
       onSubmit={handleSubmit(onSubmit)}
     >
       <h1 className='text-2xl'>Register</h1>
+      <hr />
       <div>
         <input
           className='border w-full p-2'
@@ -70,11 +71,13 @@ const RegisterForm = () => {
       </div>
       <p>
         Already have an account?{' '}
-        <Link className='underline' href='/auth/login'>
+        <Link className='text-primary underline' href='/auth/login'>
           Login
         </Link>
       </p>
-      <button className='bg-[#222222] text-white py-4'>Register</button>
+      <button className='bg-primary rounded-full text-white py-4'>
+        Register
+      </button>
     </form>
   );
 };

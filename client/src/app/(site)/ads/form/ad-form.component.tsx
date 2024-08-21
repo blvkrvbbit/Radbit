@@ -318,7 +318,7 @@ const submitButtonText = (editing: boolean, isSubmitting: boolean) => {
       <>
         Editing ad
         <Icon
-          fontSize={20}
+          fontSize={28}
           className='text-white'
           icon='line-md:loading-alt-loop'
         />

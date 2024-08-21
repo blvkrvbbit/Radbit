@@ -8,6 +8,7 @@ import editProfileFormSchema from './edit-profile-form.schema';
 import { User } from '@/app/types/user.type';
 import { useEffect, useState } from 'react';
 import { provinces, states } from '@/app/utils/provinceState';
+import { Icon } from '@iconify/react/dist/iconify.js';
 type Props = {
   user: User;
 };
@@ -18,7 +19,7 @@ const EditProfileForm = ({ user }: Props) => {
     handleSubmit,
     watch,
     getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<z.infer<typeof editProfileFormSchema>>({
     resolver: zodResolver(editProfileFormSchema),
     defaultValues: {
@@ -121,11 +122,40 @@ const EditProfileForm = ({ user }: Props) => {
         />
         {errors.city?.message ? <p>{errors.city?.message}</p> : null}
       </div>
-      <button className='border border-primary text-primary rounded-full py-4'>
-        Edit Profile
+      <button
+        className='bg-primary w-full flex justify-center items-center gap-2 py-4 text-white mt-2 rounded-full'
+        disabled={isSubmitting}
+      >
+        {submitButtonText(isSubmitSuccessful, isSubmitting)}
       </button>
     </form>
   );
+};
+
+const submitButtonText = (
+  isSubmitSuccessfull: boolean,
+  isSubmitting: boolean
+) => {
+  console.log(isSubmitSuccessfull);
+  if (isSubmitSuccessfull) {
+    return <>Profile Edited</>;
+  }
+  if (!isSubmitting) {
+    return 'Edit Profile';
+  }
+
+  if (isSubmitting) {
+    return (
+      <>
+        Editing Profile
+        <Icon
+          fontSize={28}
+          className='text-white'
+          icon='line-md:loading-alt-loop'
+        />
+      </>
+    );
+  }
 };
 
 export default EditProfileForm;
