@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import Tiptap from '@/app/components/tiptap/tiptap';
 import { twMerge } from 'tailwind-merge';
 import Ad from '@/app/types/ad.type';
-import FormField from '@/app/components/form-field/form-field.component';
+
 import DeleteImageButton from './delete-image-button/delete-image-button.component';
 
 type Props = {

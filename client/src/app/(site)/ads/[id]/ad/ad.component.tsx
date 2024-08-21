@@ -197,9 +197,10 @@ export const Description = ({ ad }: Props) => {
   const handleToggle = () => setViewMore(!viewMore);
 
   return (
-    <div className='mx-auto my-4 '>
+    <div className='mx-auto my-4 border p-4 rounded-md'>
       <h2 className='font-bold text-lg mb-2'>Description</h2>
-      <div className='relative'>
+      <hr />
+      <div className='relative mt-4'>
         {ad.description.length > 400 ? (
           <>
             {viewMore ? (

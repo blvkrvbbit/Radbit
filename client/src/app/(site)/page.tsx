@@ -27,7 +27,7 @@ const HomePage = async () => {
           <h2 className='text-2xl text-black mb-4 uppercase font-bold'>
             Welcome to R<span className='text-primary'>ad</span>bit
           </h2>
-          <p className='text-black'>Let's help you get started</p>
+          <p className='text-black'>Let&apos;s help you get started</p>
 
           <div className='flex justify-center gap-2 mt-4'>
             <button className='border-primary border text-primary rounded-full w-[10rem] mt-4 px-4 py-2'>
