@@ -35,14 +35,21 @@ export async function PUT(
   const { name, email, password, country, provinceState, city } =
     await req.json();
   let hashedPassword;
-  let dataToUpdate = {
+  let dataToUpdate: {
+    name: string;
+    email: string;
+    country: string;
+    provinceState: string;
+    city: string;
+    password?: string;
+  } = {
     name,
     email,
     country,
     provinceState,
-    password: '',
     city,
   };
+
   if (password) {
     hashedPassword = await hash(password, 10);
     dataToUpdate = {
