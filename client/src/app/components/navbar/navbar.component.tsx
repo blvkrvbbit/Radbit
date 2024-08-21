@@ -23,9 +23,9 @@ const Navbar = () => {
               <>
                 <div
                   onClick={toggleMenu}
-                  className='bg-gray-200 cursor-pointer p-2.5 rounded-full text-sm font-bold'
+                  className='bg-gray-200 cursor-pointer p-2.5 w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold'
                 >
-                  JM
+                  {session.user.name.slice(0, 1)}
                 </div>
                 {menuOpen && (
                   <div className='absolute space-y-2 border p-3 w-[8rem] top-[4.5rem] rounded  bg-white'>
