@@ -12,7 +12,6 @@ export const formatMoneyToString = (amount: number) => {
   if (format.length >= 4) {
     for (let i = 0, maxLength = 4; i < 6; i++, maxLength++) {
       if (format.length === maxLength) {
-        console.log(maxLength);
         return addComma(pos[i], format);
       }
     }

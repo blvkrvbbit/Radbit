@@ -1,7 +1,9 @@
 'use client';
+import { Icon } from '@iconify/react/dist/iconify.js';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -20,37 +22,51 @@ const Navbar = () => {
           </Link>
           <div className='flex gap-4 items-center'>
             {session ? (
-              <>
+              <div className='md:relative flex items-center gap-4'>
                 <div
                   onClick={toggleMenu}
-                  className='bg-gray-200 cursor-pointer p-2.5 w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold'
+                  className='bg-gray-200 cursor-pointer p-2.5 w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold'
                 >
                   {session.user.name.slice(0, 1)}
                 </div>
                 {menuOpen && (
-                  <div className='absolute space-y-2 border p-3 w-[8rem] top-[4.5rem] rounded  bg-white'>
+                  <div
+                    className={twMerge(
+                      'absolute max-w-[100%-32px] text-right rounded left-4 right-4 mx-auto bg-white z-10 border top-20',
+                      'md:w-[200px] md:left-[-55px]  md:top-[3.3rem]',
+                      'lg:text-sm'
+                    )}
+                  >
                     <Link
                       onClick={toggleMenu}
-                      className='block'
+                      className='block hover:bg-gray-200/80 p-2 py-3  px-4'
                       href={`/profile/${session.user.id}`}
                     >
-                      My Profile
+                      Profile
                     </Link>
                     <Link
                       onClick={toggleMenu}
-                      className='block'
+                      className='flex items-center justify-end gap-4 hover:bg-gray-200/80 p-2 py-3  px-4'
                       href={`/profile/${session.user.id}/ads`}
                     >
                       My Ads
                     </Link>
                     <Link
                       onClick={toggleMenu}
-                      className='block'
+                      className='flex items-center justify-end gap-4 hover:bg-gray-200/80 p-2 py-3  px-4'
                       href={`/profile/${session.user.id}/messages`}
                     >
                       Messages
                     </Link>
-                    <div className='cursor-pointer ' onClick={handleLogOut}>
+                    <div
+                      className='flex items-center justify-end gap-2  hover:bg-gray-200/80 p-2 py-3  px-4 cursor-pointer'
+                      onClick={handleLogOut}
+                    >
+                      <Icon
+                        className='text-primary'
+                        fontSize={18}
+                        icon='uis:signout'
+                      />{' '}
                       Sign Out
                     </div>
                   </div>
@@ -64,7 +80,7 @@ const Navbar = () => {
                 >
                   Post Ad
                 </Link>
-              </>
+              </div>
             ) : (
               <>
                 <Link href='/auth/register'>Register</Link>

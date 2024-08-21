@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { MouseEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import { formatMoneyToString } from '@/app/utils/money';
+import { convertHtmlToText } from '@/app/utils/convert-html-to-text';
 type Props = {
   ad: Ad;
 };
@@ -50,6 +51,7 @@ type UserAdCardProps = {
   ad: Ad;
 };
 export const UserAdsCard = ({ ad }: UserAdCardProps) => {
+  console.log(convertHtmlToText(ad.description));
   const router = useRouter();
   const handleDelete = async (e: any) => {
     e.preventDefault();
@@ -101,11 +103,11 @@ export const UserAdsCard = ({ ad }: UserAdCardProps) => {
         </div>
         <RenderHTML
           className='mt-4 md:hidden'
-          content={ad.description.slice(0, 40) + '...'}
+          content={convertHtmlToText(ad.description.slice(0, 40)) + '...'}
         />
         <RenderHTML
-          className='mt-4 lg:'
-          content={ad.description.slice(0, 60) + '...'}
+          className='mt-4 hidden lg:block'
+          content={convertHtmlToText(ad.description.slice(0, 60)) + '...'}
         />
       </div>
     </Link>
