@@ -1,16 +1,21 @@
 'use client';
+import { signIn, useSession } from 'next-auth/react';
 import registerFormSchema from './register-form.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const RegisterForm = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -19,6 +24,7 @@ const RegisterForm = () => {
       password: '',
     },
   });
+  console.log(session?.user);
 
   const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
     const response = await fetch('/api/auth/register', {
@@ -28,6 +34,12 @@ const RegisterForm = () => {
       }),
     });
     if (response.status === 200) {
+      const response = await signIn('credentials', {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+      router.push(`/profile/${session?.user.id}/ads`);
       // TODO: Redirect to profile after successful register
     } else {
       // Handle Server Error on client to display to user.
@@ -75,11 +87,39 @@ const RegisterForm = () => {
           Login
         </Link>
       </p>
-      <button className='bg-primary rounded-full text-white py-4'>
-        Register
+      <button
+        className='bg-primary rounded-full text-white py-3 flex justify-center items-center'
+        disabled={isSubmitting}
+      >
+        {submitButtonText(isSubmitSuccessful, isSubmitting)}
       </button>
     </form>
   );
+};
+
+const submitButtonText = (
+  isSubmitSuccessfull: boolean,
+  isSubmitting: boolean
+) => {
+  if (isSubmitSuccessfull) {
+    return <>Registered</>;
+  }
+  if (!isSubmitting) {
+    return 'Register';
+  }
+
+  if (isSubmitting) {
+    return (
+      <>
+        Registering
+        <Icon
+          fontSize={28}
+          className='text-white'
+          icon='line-md:loading-alt-loop'
+        />
+      </>
+    );
+  }
 };
 
 export default RegisterForm;

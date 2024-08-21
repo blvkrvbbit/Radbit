@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const LoginForm = () => {
   const { data: session } = useSession();
@@ -15,7 +16,7 @@ const LoginForm = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -70,9 +71,38 @@ const LoginForm = () => {
           Register
         </Link>
       </p>
-      <button className='bg-primary rounded-full text-white py-4'>Login</button>
+      <button
+        className='bg-primary rounded-full text-white py-3 flex justify-center items-center'
+        disabled={isSubmitting}
+      >
+        {submitButtonText(isSubmitSuccessful, isSubmitting)}
+      </button>
     </form>
   );
 };
 
+const submitButtonText = (
+  isSubmitSuccessfull: boolean,
+  isSubmitting: boolean
+) => {
+  if (isSubmitSuccessfull) {
+    return <>Logged in</>;
+  }
+  if (!isSubmitting) {
+    return 'Login';
+  }
+
+  if (isSubmitting) {
+    return (
+      <>
+        Logging in
+        <Icon
+          fontSize={24}
+          className='text-white'
+          icon='line-md:loading-alt-loop'
+        />
+      </>
+    );
+  }
+};
 export default LoginForm;

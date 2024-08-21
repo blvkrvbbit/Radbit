@@ -19,7 +19,9 @@ const Navigation = ({ categories }: Props) => {
       <Link
         className={twMerge(
           'hover:bg-gray-400/20 px-3 py-1 rounded-full',
-          pathname === '/' ? 'bg-primary text-white' : ''
+          pathname === '/'
+            ? 'bg-primary text-white hover:bg-primary hover:text-white'
+            : ''
         )}
         href={`/`}
       >
@@ -37,7 +39,7 @@ const Navigation = ({ categories }: Props) => {
                 pathname.includes(
                   formatCategoryUrl(category.name).toLowerCase()
                 )
-                  ? 'bg-primary text-white'
+                  ? 'bg-primary text-white hover:bg-primary hover:text-white'
                   : ''
               )}
               key={id}
